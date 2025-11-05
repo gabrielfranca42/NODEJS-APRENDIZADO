@@ -1,9 +1,20 @@
 import express from "express";
 
-const app = express()
+const app = express();
+app.use(express.json());
 
-app.get(`/usuarios `, (req, res)=>{
-    app.send(`OK, deu bom`)
-})
+const users = [];
 
-app.listen(3000)
+app.post("/usuarios", (req, res) => {
+  users.push(req.body);
+  res.send("OK aqui e flamengo");
+});
+
+app.get("/usuarios", (req, res) => {
+  res.send("OK, deu bom");
+});
+//porra
+
+app.listen(3000, () => {
+  console.log("Servidor rodando na porta 3000");
+});
