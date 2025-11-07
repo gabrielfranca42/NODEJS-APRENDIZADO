@@ -7,11 +7,14 @@ const users = [];
 
 app.post("/usuarios", (req, res) => {
   users.push(req.body);
-  res.send("OK aqui e flamengo");
+
+
+  res.status(201).json(req.body);
+
 });
 
 app.get("/usuarios", (req, res) => {
-  res.send("OK, deu bom");
+  res.status(200).json(users);
 });
 //porra
 
