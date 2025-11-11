@@ -1,79 +1,48 @@
 import express from "express";
+import { PrismaClient } from "@prisma/client";
 
 const app = express();
+const prisma = new PrismaClient();
+
 app.use(express.json());
 
-
-
 app.post("/usuarios", async (req, res) => {
-  users.push(req.body);
-
-  await prisma.user.create({
-    data:{
+  const novoUsuario = await prisma.user.create({
+    data: {
       email: req.body.email,
-      name : req.body.name,
-      age : req.body.age
+      name: req.body.name,
+      age: req.body.age,
+    },
+  });
 
-    }
-  })
-
-  res.status(201).json(req.body);
-
+  res.status(201).json(novoUsuario);
 });
 
-app.get("/usuarios", async(req, res) => {
-
-let users = []
-
-  if(req.query){
-    users = await prismas.user.findMany({
-      where: {}
-    })
-  } else {
-    users = await prisma.user.findMany()
-  }
-
-   const users = await prisma.user.findMany()
-
-
-
+app.get("/usuarios", async (req, res) => {
+  const users = await prisma.user.findMany();
   res.status(200).json(users);
 });
-//porra
 
-
-
-app.put("/usuarios", async (req, res) => {
-  users.push(req.body);
-
-  await prisma.user.update({
-    where: {
-      id: req.params.id
-    },
-
-    data:{
+app.put("/usuarios/:id", async (req, res) => {
+  const usuarioAtualizado = await prisma.user.update({
+    where: { id: parseInt(req.params.id) },
+    data: {
       email: req.body.email,
-      name : req.body.name,
-      age : req.body.age
+      name: req.body.name,
+      age: req.body.age,
+    },
+  });
 
-    }
-  })
+  res.status(200).json(usuarioAtualizado);
+});
 
-  res.status(201).json(req.body);
-})
-
-app.delete('/usuarios/:id'), async (req,res) =>{
+app.delete("/usuarios/:id", async (req, res) => {
   await prisma.user.delete({
-    where: {
-      id: req.params.id
-    }
+    where: { id: parseInt(req.params.id) },
+  });
 
-  })
-
-  res.status(200).json({message: "usuarios"})
-   
-}
-
+  res.status(200).json({ message: "Usuário deletado com sucesso" });
+});
 
 app.listen(3000, () => {
   console.log("Servidor rodando na porta 3000");
