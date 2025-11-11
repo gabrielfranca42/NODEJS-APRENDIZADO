@@ -23,6 +23,8 @@ app.get("/usuarios", async (req, res) => {
   res.status(200).json(users);
 });
 
+//essa porr nao comita
+
 app.put("/usuarios/:id", async (req, res) => {
   const usuarioAtualizado = await prisma.user.update({
     where: { id: parseInt(req.params.id) },
